@@ -51,3 +51,62 @@ d = (a**2).mean() - m**2
 
 print(f"Математическое ожидание M = {m:.6f}")
 print(f"Дисперсия D = {d:.6f}")
+
+
+
+# 19
+print('\n\n\nTask 19\n')
+import numpy as np
+
+# 1. Исходные данные
+n = 20
+i = np.arange(1, n + 1)  # Создаем индексы от 1 до 20
+
+# 2. Вычисляем компоненты вектора x
+# Формула: arcctg(sqrt(i) + 1/20) + e^(-0.5 * i)
+# Используем np.pi / 2 - np.arctan() для реализации арккотангенса
+arg = np.sqrt(i) + (1 / 20)
+x = (np.pi / 2 - np.arctan(arg)) + np.exp(-0.5 * i)
+
+# 3. Вывод вектора на печать
+print("Вектор x:")
+print(x)
+
+# 4. Проверка на монотонное возрастание
+# np.diff(x) вычисляет разницу между соседними элементами (x[i+1] - x[i])
+# Если все разницы > 0, то последовательность строго возрастает
+is_mono_increasing = np.all(np.diff(x) > 0)
+
+print("-" * 30)
+print(f"Логическая переменная: {is_mono_increasing}")
+
+
+
+# 20
+# 1. Сначала создадим тестовый файл f.txt (для примера)
+with open('f.txt', 'w', encoding='utf-8') as f:
+    f.write("Это   пример текста   в котором есть а одиночные буквы и   лишние пробелы.")
+
+# 2. Основная логика обработки
+try:
+    with open('f.txt', 'r', encoding='utf-8') as file_in:
+        content = file_in.read()
+        
+    # .split() разбивает строку по любым пробелам и удаляет пустые элементы
+    words = content.split()
+    
+    # Фильтруем слова: оставляем только те, длина которых больше 1
+    filtered_words = [word for word in words if len(word) > 1]
+    
+    # Соединяем слова обратно через один пробел
+    result = " ".join(filtered_words)
+    
+    # 3. Записываем результат в файл g.txt
+    with open('g.txt', 'w', encoding='utf-8') as file_out:
+        file_out.write(result)
+        
+    print("Обработка завершена. Результат записан в g.txt")
+    print(f"Результат: {result}")
+
+except FileNotFoundError:
+    print("Ошибка: входной файл f.txt не найден.")
