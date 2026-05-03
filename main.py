@@ -194,142 +194,144 @@
 
 
 # 27
-# import csv
-# import os
+import csv
+import os
 
-# # 1. Представление таблиц в виде структур Python
-# # Используем списки словарей. Связи осуществляются через ID.
-# countries = []  # {'id': int, 'name': str}
-# cities = []     # {'id': int, 'country_id': int, 'name': str}
-# streets = []    # {'id': int, 'city_id': int, 'name': str}
+# 1. Представление таблиц в виде структур Python
+# Используем списки словарей. Связи осуществляются через ID.
+countries = []  # {'id': int, 'name': str}
+cities = []     # {'id': int, 'country_id': int, 'name': str}
+streets = []    # {'id': int, 'city_id': int, 'name': str}
 
-# # --- ФУНКЦИИ ДЛЯ РАБОТЫ С ФАЙЛАМИ (.csv) ---
+# --- ФУНКЦИИ ДЛЯ РАБОТЫ С ФАЙЛАМИ (.csv) ---
 
-# def save_to_csv():
-#     """Сохранение всех структур в CSV файлы"""
-#     with open('countries.csv', 'w', newline='', encoding='utf-8') as f:
-#         writer = csv.DictWriter(f, fieldnames=['id', 'name'])
-#         writer.writeheader()
-#         writer.writerows(countries)
+def save_to_csv():
+    """Сохранение всех структур в CSV файлы с фиксом для Excel"""
+    # utf-8-sig добавляет BOM, чтобы Excel понимал кодировку
+    # delimiter=';' нужен, так как в русской винде Excel ждет точку с запятой
+    with open('countries.csv', 'w', newline='', encoding='utf-8-sig') as f:
+        writer = csv.DictWriter(f, fieldnames=['id', 'name'], delimiter=';')
+        writer.writeheader()
+        writer.writerows(countries)
     
-#     with open('cities.csv', 'w', newline='', encoding='utf-8') as f:
-#         writer = csv.DictWriter(f, fieldnames=['id', 'country_id', 'name'])
-#         writer.writeheader()
-#         writer.writerows(cities)
+    with open('cities.csv', 'w', newline='', encoding='utf-8-sig') as f:
+        writer = csv.DictWriter(f, fieldnames=['id', 'country_id', 'name'], delimiter=';')
+        writer.writeheader()
+        writer.writerows(cities)
         
-#     with open('streets.csv', 'w', newline='', encoding='utf-8') as f:
-#         writer = csv.DictWriter(f, fieldnames=['id', 'city_id', 'name'])
-#         writer.writeheader()
-#         writer.writerows(streets)
-#     print("\n[Система]: Данные успешно сохранены в CSV.")
+    with open('streets.csv', 'w', newline='', encoding='utf-8-sig') as f:
+        writer = csv.DictWriter(f, fieldnames=['id', 'city_id', 'name'], delimiter=';')
+        writer.writeheader()
+        writer.writerows(streets)
+    print("\n[Система]: Данные сохранены. Теперь Excel откроет их красиво!")
 
-# def load_from_csv():
-#     """Загрузка данных из CSV файлов"""
-#     global countries, cities, streets
-#     try:
-#         if os.path.exists('countries.csv'):
-#             with open('countries.csv', 'r', encoding='utf-8') as f:
-#                 countries = list(csv.DictReader(f))
-#                 for c in countries: c['id'] = int(c['id'])
+def load_from_csv():
+    """Загрузка данных из CSV файлов с поддержкой точки с запятой"""
+    global countries, cities, streets
+    try:
+        if os.path.exists('countries.csv'):
+            with open('countries.csv', 'r', encoding='utf-8-sig') as f:
+                countries = list(csv.DictReader(f, delimiter=';'))
+                for c in countries: c['id'] = int(c['id'])
         
-#         if os.path.exists('cities.csv'):
-#             with open('cities.csv', 'r', encoding='utf-8') as f:
-#                 cities = list(csv.DictReader(f))
-#                 for c in cities: 
-#                     c['id'] = int(c['id'])
-#                     c['country_id'] = int(c['country_id'])
+        if os.path.exists('cities.csv'):
+            with open('cities.csv', 'r', encoding='utf-8-sig') as f:
+                cities = list(csv.DictReader(f, delimiter=';'))
+                for c in cities: 
+                    c['id'] = int(c['id'])
+                    c['country_id'] = int(c['country_id'])
         
-#         if os.path.exists('streets.csv'):
-#             with open('streets.csv', 'r', encoding='utf-8') as f:
-#                 streets = list(csv.DictReader(f))
-#                 for s in streets:
-#                     s['id'] = int(s['id'])
-#                     s['city_id'] = int(s['city_id'])
-#         print("\n[Система]: Данные загружены из файлов.")
-#     except Exception as e:
-#         print(f"Ошибка при загрузке: {e}")
+        if os.path.exists('streets.csv'):
+            with open('streets.csv', 'r', encoding='utf-8-sig') as f:
+                streets = list(csv.DictReader(f, delimiter=';'))
+                for s in streets:
+                    s['id'] = int(s['id'])
+                    s['city_id'] = int(s['city_id'])
+        print("\n[Система]: Данные успешно загружены.")
+    except Exception as e:
+        print(f"Ошибка при загрузке: {e}")
 
-# # --- ФУНКЦИИ ОБРАБОТКИ ДАННЫХ (CRUD и Связи) ---
+# --- ФУНКЦИИ ОБРАБОТКИ ДАННЫХ (CRUD и Связи) ---
 
-# def add_country(name):
-#     new_id = max([c['id'] for c in countries], default=0) + 1
-#     countries.append({'id': new_id, 'name': name})
+def add_country(name):
+    new_id = max([c['id'] for c in countries], default=0) + 1
+    countries.append({'id': new_id, 'name': name})
 
-# def delete_country(country_id):
-#     # Каскадное удаление: сначала города этой страны и их улицы
-#     global countries, cities, streets
-#     # 1. Находим города этой страны
-#     cities_to_del = [c['id'] for c in cities if c['country_id'] == country_id]
-#     # 2. Удаляем улицы этих городов
-#     streets = [s for s in streets if s['city_id'] not in cities_to_del]
-#     # 3. Удаляем города
-#     cities = [c for c in cities if c['country_id'] != country_id]
-#     # 4. Удаляем саму страну
-#     countries = [c for c in countries if c['id'] != country_id]
+def delete_country(country_id):
+    # Каскадное удаление: сначала города этой страны и их улицы
+    global countries, cities, streets
+    # 1. Находим города этой страны
+    cities_to_del = [c['id'] for c in cities if c['country_id'] == country_id]
+    # 2. Удаляем улицы этих городов
+    streets = [s for s in streets if s['city_id'] not in cities_to_del]
+    # 3. Удаляем города
+    cities = [c for c in cities if c['country_id'] != country_id]
+    # 4. Удаляем саму страну
+    countries = [c for c in countries if c['id'] != country_id]
 
-# def show_variant_info():
-#     """Вывод информации согласно Варианту 10"""
-#     print("\n=== ИНФОРМАЦИЯ ПО СТРАНАМ И ГОРОДАМ ===")
-#     for country in countries:
-#         # Список городов для каждой страны
-#         country_cities = [c['name'] for c in cities if c['country_id'] == country['id']]
-#         print(f"Страна: «{country['name']}», города: {', '.join(country_cities) if country_cities else 'нет городов'}")
+def show_variant_info():
+    """Вывод информации согласно Варианту 10"""
+    print("\n=== ИНФОРМАЦИЯ ПО СТРАНАМ И ГОРОДАМ ===")
+    for country in countries:
+        # Список городов для каждой страны
+        country_cities = [c['name'] for c in cities if c['country_id'] == country['id']]
+        print(f"Страна: «{country['name']}», города: {', '.join(country_cities) if country_cities else 'нет городов'}")
 
-#     print("\n=== СТАТИСТИКА ПО ГОРОДАМ (УЛИЦЫ) ===")
-#     for city in cities:
-#         # Количество улиц в каждом городе
-#         street_count = sum(1 for s in streets if s['city_id'] == city['id'])
-#         print(f"Город: {city['name']} | Количество улиц: {street_count}")
+    print("\n=== СТАТИСТИКА ПО ГОРОДАМ (УЛИЦЫ) ===")
+    for city in cities:
+        # Количество улиц в каждом городе
+        street_count = sum(1 for s in streets if s['city_id'] == city['id'])
+        print(f"Город: {city['name']} | Количество улиц: {street_count}")
 
-# # --- ИНТЕРФЕЙС КОНСОЛИ ---
+# --- ИНТЕРФЕЙС КОНСОЛИ ---
 
-# def main_menu():
-#     load_from_csv()
-#     while True:
-#         print("\n--- МЕНЮ УПРАВЛЕНИЯ БАЗОЙ ДАННЫХ ---")
-#         print("1. Показать отчет (Вариант 10)")
-#         print("2. Добавить страну")
-#         print("3. Добавить город (в страну)")
-#         print("4. Добавить улицу (в город)")
-#         print("5. Удалить страну (каскадно)")
-#         print("6. Сохранить изменения")
-#         print("0. Выход")
+def main_menu():
+    load_from_csv()
+    while True:
+        print("\n--- МЕНЮ УПРАВЛЕНИЯ БАЗОЙ ДАННЫХ ---")
+        print("1. Показать отчет (Вариант 10)")
+        print("2. Добавить страну")
+        print("3. Добавить город (в страну)")
+        print("4. Добавить улицу (в город)")
+        print("5. Удалить страну (каскадно)")
+        print("6. Сохранить изменения")
+        print("0. Выход")
         
-#         choice = input("Выберите действие: ")
+        choice = input("Выберите действие: ")
         
-#         if choice == '1':
-#             show_variant_info()
-#         elif choice == '2':
-#             name = input("Введите название страны: ")
-#             add_country(name)
-#         elif choice == '3':
-#             if not countries: print("Сначала создайте страну!"); continue
-#             for c in countries: print(f"{c['id']}: {c['name']}")
-#             c_id = int(input("ID страны: "))
-#             name = input("Название города: ")
-#             new_id = max([c['id'] for c in cities], default=0) + 1
-#             cities.append({'id': new_id, 'country_id': c_id, 'name': name})
-#         elif choice == '4':
-#             if not cities: print("Сначала создайте город!"); continue
-#             for c in cities: print(f"{c['id']}: {c['name']}")
-#             c_id = int(input("ID города: "))
-#             name = input("Название улицы: ")
-#             new_id = max([s['id'] for s in streets], default=0) + 1
-#             streets.append({'id': new_id, 'city_id': c_id, 'name': name})
-#         elif choice == '5':
-#             for c in countries: print(f"{c['id']}: {c['name']}")
-#             c_id = int(input("ID страны для удаления: "))
-#             delete_country(c_id)
-#             print("Удалено.")
-#         elif choice == '6':
-#             save_to_csv()
-#         elif choice == '0':
-#             break
-#         else:
-#             print("Неверный ввод.")
+        if choice == '1':
+            show_variant_info()
+        elif choice == '2':
+            name = input("Введите название страны: ")
+            add_country(name)
+        elif choice == '3':
+            if not countries: print("Сначала создайте страну!"); continue
+            for c in countries: print(f"{c['id']}: {c['name']}")
+            c_id = int(input("ID страны: "))
+            name = input("Название города: ")
+            new_id = max([c['id'] for c in cities], default=0) + 1
+            cities.append({'id': new_id, 'country_id': c_id, 'name': name})
+        elif choice == '4':
+            if not cities: print("Сначала создайте город!"); continue
+            for c in cities: print(f"{c['id']}: {c['name']}")
+            c_id = int(input("ID города: "))
+            name = input("Название улицы: ")
+            new_id = max([s['id'] for s in streets], default=0) + 1
+            streets.append({'id': new_id, 'city_id': c_id, 'name': name})
+        elif choice == '5':
+            for c in countries: print(f"{c['id']}: {c['name']}")
+            c_id = int(input("ID страны для удаления: "))
+            delete_country(c_id)
+            print("Удалено.")
+        elif choice == '6':
+            save_to_csv()
+        elif choice == '0':
+            break
+        else:
+            print("Неверный ввод.")
 
-# if __name__ == "__main__":
-#     main_menu()
+if __name__ == "__main__":
+    main_menu()
 
 
 
