@@ -1,117 +1,4 @@
 
-# # 12
-# import math
-
-# f = lambda x: math.sqrt(x**2 - 0.16) / x
-# # точная первообразная F(x) относительно нижней границы a=1
-# F_exact = lambda x: math.sqrt(x**2-0.16) - 0.4*math.acos(0.4/x) - math.sqrt(0.84) + 0.4*math.acos(0.4)
-
-# a, b, n = 1.0, 2.0, 160
-# h = (b - a) / n
-# integral, x = 0.0, a
-
-# print(f"{'x':<6} | {'Числ. F(x)':<12} | {'Точн. F(x)':<12} | {'Погр.':<9}")
-# for i in range(n + 1):
-#     if i > 0: 
-#         integral += (f(x - h) + f(x)) / 2 * h
-#     if i % 20 == 0: # вывод каждые 1/8 (20 шагов из 160)
-#         t = F_exact(x)
-#         print(f"{x:<6.3f} | {integral:<12.6f} | {t:<12.6f} | {abs(integral-t):.2e}")
-#     x += h
-
-
-# # 13
-# print('\n\n\nЗадание 13 \n\n')
-# import math
-
-# print(f"{'x':>4} | {'Стирлинг':>14} | {'Точное':>14} | {'Погрешн.':>9}")
-# x = 1.0
-# while x <= 10.1:
-#     # формула Стирлинга из условия
-#     s = math.sqrt(2*math.pi/x) * (x/math.e)**x * (1 + 1/(12*x) + 1/(288*x**2) - 139/(51840*x**3))
-#     g = math.gamma(x) # точное табличное значение
-    
-#     print(f"{x:4.1f} | {s:14.6f} | {g:14.6f} | {abs(s-g):.2e}")
-#     x += 0.9
-
-
-
-# # 17
-# print('\n\n\nTask 17\n')
-# import numpy as np
-
-# n = 23
-# i = np.arange(1, n + 1)
-
-# # Вычисляем массив a: если i > 17 -> sin(i), иначе ctg(i)^2
-# a = np.where(i > 17, np.sin(i), (1 / np.tan(i))**2)
-
-# m = a.mean()
-# d = (a**2).mean() - m**2
-
-# print(f"Математическое ожидание M = {m:.6f}")
-# print(f"Дисперсия D = {d:.6f}")
-
-
-
-# 19
-# print('\n\n\nTask 19\n')
-# import numpy as np
-
-# # 1. Исходные данные
-# n = 20
-# i = np.arange(1, n + 1)  # Создаем индексы от 1 до 20
-
-# # 2. Вычисляем компоненты вектора x
-# # Формула: arcctg(sqrt(i) + 1/20) + e^(-0.5 * i)
-# # Используем np.pi / 2 - np.arctan() для реализации арккотангенса
-# arg = np.sqrt(i) + (1 / 20)
-# x = (np.pi / 2 - np.arctan(arg)) + np.exp(-0.5 * i)
-
-# # 3. Вывод вектора на печать
-# print("Вектор x:")
-# print(x)
-
-# # 4. Проверка на монотонное возрастание
-# # np.diff(x) вычисляет разницу между соседними элементами (x[i+1] - x[i])
-# # Если все разницы > 0, то последовательность строго возрастает
-# is_mono_increasing = np.all(np.diff(x) > 0)
-
-# print("-" * 30)
-# print(f"Логическая переменная: {is_mono_increasing}")
-
-
-
-# 20
-# 1. Сначала создадим тестовый файл f.txt (для примера)
-# with open('f.txt', 'w', encoding='utf-8') as f:
-#     f.write("Это   пример текста   в котором есть а одиночные буквы и   лишние пробелы.")
-
-# # 2. Основная логика обработки
-# try:
-#     with open('f.txt', 'r', encoding='utf-8') as file_in:
-#         content = file_in.read()
-        
-#     # .split() разбивает строку по любым пробелам и удаляет пустые элементы
-#     words = content.split()
-    
-#     # Фильтруем слова: оставляем только те, длина которых больше 1
-#     filtered_words = [word for word in words if len(word) > 1]
-    
-#     # Соединяем слова обратно через один пробел
-#     result = " ".join(filtered_words)
-    
-#     # 3. Записываем результат в файл g.txt
-#     with open('g.txt', 'w', encoding='utf-8') as file_out:
-#         file_out.write(result)
-        
-#     print("Обработка завершена. Результат записан в g.txt")
-#     print(f"Результат: {result}")
-
-# except FileNotFoundError:
-#     print("Ошибка: входной файл f.txt не найден.")
-
-
 # 21
 # import turtle
 # import math
@@ -186,40 +73,263 @@
 #     draw_dial()
 
 
-import matplotlib.pyplot as plt
-import numpy as np
+# import matplotlib.pyplot as plt
+# import numpy as np
 
-# Параметры из условия
-a = -5 * np.pi
-b = 10 * np.pi
-n = 100
+# # Параметры из условия
+# a = -5 * np.pi
+# b = 10 * np.pi
+# n = 100
 
-x = np.linspace(a, b, n)
+# x = np.linspace(a, b, n)
 
-y = 2 * np.cos(x - np.pi / 6)
+# y = 2 * np.cos(x - np.pi / 6)
 
-plt.figure(figsize=(12, 6))
-plt.plot(x, y, label=r'$y = 2 \cos(x - \pi/6)$', color='blue', linewidth=2)
+# plt.figure(figsize=(12, 6))
+# plt.plot(x, y, label=r'$y = 2 \cos(x - \pi/6)$', color='blue', linewidth=2)
 
-plt.title(f'График функции $y = 2 \\cos(x - \\pi/6)$ на интервале [$-5\\pi$, $10\\pi$]')
-plt.xlabel('x')
-plt.ylabel('y')
+# plt.title(f'График функции $y = 2 \\cos(x - \\pi/6)$ на интервале [$-5\\pi$, $10\\pi$]')
+# plt.xlabel('x')
+# plt.ylabel('y')
 
-plt.grid(True, linestyle='--', alpha=0.7)
+# plt.grid(True, linestyle='--', alpha=0.7)
 
-plt.axhline(0, color='black', linewidth=1)
-plt.axvline(0, color='black', linewidth=1)
+# plt.axhline(0, color='black', linewidth=1)
+# plt.axvline(0, color='black', linewidth=1)
 
-# # Настроим деления по оси X, чтобы они отображались в долях Пи (опционально для красоты)
-def format_func(value, tick_number):
-    N = int(np.round(value / np.pi))
-    if N == 0: return "0"
-    if N == 1: return r"$\pi$"
-    if N == -1: return r"$-\pi$"
-    return r"${0}\pi$".format(N)
+# # # Настроим деления по оси X, чтобы они отображались в долях Пи (опционально для красоты)
+# def format_func(value, tick_number):
+#     N = int(np.round(value / np.pi))
+#     if N == 0: return "0"
+#     if N == 1: return r"$\pi$"
+#     if N == -1: return r"$-\pi$"
+#     return r"${0}\pi$".format(N)
 
-plt.gca().xaxis.set_major_formatter(plt.FuncFormatter(format_func))
-plt.gca().xaxis.set_major_locator(plt.MultipleLocator(base=np.pi * 2)) # Шаг в 2 Пи
+# plt.gca().xaxis.set_major_formatter(plt.FuncFormatter(format_func))
+# plt.gca().xaxis.set_major_locator(plt.MultipleLocator(base=np.pi * 2)) # Шаг в 2 Пи
 
-plt.legend()
-plt.show()
+# plt.legend()
+# plt.show()
+
+
+
+
+# 25
+# class Product:
+#     # 1. Конструктор (с параметрами по умолчанию, что заменяет конструктор по умолчанию)
+#     def __init__(self, name="Неизвестно", price_rub=0.0, manufacturer="Неизвестно"):
+#         self.name = name
+#         self.price_rub = float(price_rub)
+#         self.manufacturer = manufacturer
+
+#     # 2. Деструктор для сообщения об уничтожении объекта
+#     def __del__(self):
+#         print(f"[System]: Объект '{self.name}' удален.")
+
+#     # 3. Метод 1: Пересчитать цену товара в евро
+#     def calculate_price_euro(self, rate):
+#         if rate <= 0:
+#             return 0
+#         return self.price_rub / rate
+
+#     # 3. Метод 2: Увеличить цену товара, если название содержит «Samsung»
+#     def apply_samsung_markup(self, percent=10):
+#         if "Samsung" in self.name:
+#             self.price_rub += self.price_rub * (percent / 100)
+#             print(f"-> Цена товара '{self.name}' увеличена на {percent}% (бренд Samsung).")
+#         else:
+#             print(f"-> Товар '{self.name}' не является Samsung, цена не изменена.")
+
+#     # 4. Функция формирования строки информации об объекте
+#     def get_info(self):
+#         return (f"Товар: {self.name:<20} | "
+#                 f"Изготовитель: {self.manufacturer:<15} | "
+#                 f"Цена: {self.price_rub:>10.2f} руб.")
+
+# # 5. Создание проекта для демонстрации работы
+# def main():
+#     print("=== Лабораторная работа №25 (Вариант 14) ===\n")
+    
+#     # Курс евро для расчетов
+#     EURO_RATE = 100.0
+
+#     # Создание трех объектов класса:
+    
+#     # Объект 1: Со значениями-константами
+#     obj1 = Product("Samsung Galaxy S24", 95000.0, "Samsung")
+
+#     # Объект 2: Со значениями-константами
+#     obj2 = Product("iPhone 15", 110000.0, "Apple")
+
+#     # Объект 3: С вводом данных с клавиатуры
+#     print("Введите данные для третьего товара:")
+#     name = input("Наименование: ")
+#     try:
+#         price = float(input("Цена в рублях: "))
+#     except ValueError:
+#         price = 0.0
+#     manuf = input("Изготовитель: ")
+#     obj3 = Product(name, price, manuf)
+    
+#     products = [obj1, obj2, obj3]
+
+#     print("\n--- Список товаров до обработки ---")
+#     for p in products:
+#         print(p.get_info())
+#         print(f"    Цена в евро: {p.calculate_price_euro(EURO_RATE):.2f} EUR")
+
+#     print("\n--- Обработка данных (Метод 2) ---")
+#     for p in products:
+#         p.apply_samsung_markup()
+
+#     print("\n--- Список товаров после обработки ---")
+#     for p in products:
+#         print(p.get_info())
+
+#     print("\nЗавершение работы программы...")
+# if __name__ == "__main__":
+#     main()
+
+
+
+
+# 27
+# import csv
+# import os
+
+# # 1. Представление таблиц в виде структур Python
+# # Используем списки словарей. Связи осуществляются через ID.
+# countries = []  # {'id': int, 'name': str}
+# cities = []     # {'id': int, 'country_id': int, 'name': str}
+# streets = []    # {'id': int, 'city_id': int, 'name': str}
+
+# # --- ФУНКЦИИ ДЛЯ РАБОТЫ С ФАЙЛАМИ (.csv) ---
+
+# def save_to_csv():
+#     """Сохранение всех структур в CSV файлы"""
+#     with open('countries.csv', 'w', newline='', encoding='utf-8') as f:
+#         writer = csv.DictWriter(f, fieldnames=['id', 'name'])
+#         writer.writeheader()
+#         writer.writerows(countries)
+    
+#     with open('cities.csv', 'w', newline='', encoding='utf-8') as f:
+#         writer = csv.DictWriter(f, fieldnames=['id', 'country_id', 'name'])
+#         writer.writeheader()
+#         writer.writerows(cities)
+        
+#     with open('streets.csv', 'w', newline='', encoding='utf-8') as f:
+#         writer = csv.DictWriter(f, fieldnames=['id', 'city_id', 'name'])
+#         writer.writeheader()
+#         writer.writerows(streets)
+#     print("\n[Система]: Данные успешно сохранены в CSV.")
+
+# def load_from_csv():
+#     """Загрузка данных из CSV файлов"""
+#     global countries, cities, streets
+#     try:
+#         if os.path.exists('countries.csv'):
+#             with open('countries.csv', 'r', encoding='utf-8') as f:
+#                 countries = list(csv.DictReader(f))
+#                 for c in countries: c['id'] = int(c['id'])
+        
+#         if os.path.exists('cities.csv'):
+#             with open('cities.csv', 'r', encoding='utf-8') as f:
+#                 cities = list(csv.DictReader(f))
+#                 for c in cities: 
+#                     c['id'] = int(c['id'])
+#                     c['country_id'] = int(c['country_id'])
+        
+#         if os.path.exists('streets.csv'):
+#             with open('streets.csv', 'r', encoding='utf-8') as f:
+#                 streets = list(csv.DictReader(f))
+#                 for s in streets:
+#                     s['id'] = int(s['id'])
+#                     s['city_id'] = int(s['city_id'])
+#         print("\n[Система]: Данные загружены из файлов.")
+#     except Exception as e:
+#         print(f"Ошибка при загрузке: {e}")
+
+# # --- ФУНКЦИИ ОБРАБОТКИ ДАННЫХ (CRUD и Связи) ---
+
+# def add_country(name):
+#     new_id = max([c['id'] for c in countries], default=0) + 1
+#     countries.append({'id': new_id, 'name': name})
+
+# def delete_country(country_id):
+#     # Каскадное удаление: сначала города этой страны и их улицы
+#     global countries, cities, streets
+#     # 1. Находим города этой страны
+#     cities_to_del = [c['id'] for c in cities if c['country_id'] == country_id]
+#     # 2. Удаляем улицы этих городов
+#     streets = [s for s in streets if s['city_id'] not in cities_to_del]
+#     # 3. Удаляем города
+#     cities = [c for c in cities if c['country_id'] != country_id]
+#     # 4. Удаляем саму страну
+#     countries = [c for c in countries if c['id'] != country_id]
+
+# def show_variant_info():
+#     """Вывод информации согласно Варианту 10"""
+#     print("\n=== ИНФОРМАЦИЯ ПО СТРАНАМ И ГОРОДАМ ===")
+#     for country in countries:
+#         # Список городов для каждой страны
+#         country_cities = [c['name'] for c in cities if c['country_id'] == country['id']]
+#         print(f"Страна: «{country['name']}», города: {', '.join(country_cities) if country_cities else 'нет городов'}")
+
+#     print("\n=== СТАТИСТИКА ПО ГОРОДАМ (УЛИЦЫ) ===")
+#     for city in cities:
+#         # Количество улиц в каждом городе
+#         street_count = sum(1 for s in streets if s['city_id'] == city['id'])
+#         print(f"Город: {city['name']} | Количество улиц: {street_count}")
+
+# # --- ИНТЕРФЕЙС КОНСОЛИ ---
+
+# def main_menu():
+#     load_from_csv()
+#     while True:
+#         print("\n--- МЕНЮ УПРАВЛЕНИЯ БАЗОЙ ДАННЫХ ---")
+#         print("1. Показать отчет (Вариант 10)")
+#         print("2. Добавить страну")
+#         print("3. Добавить город (в страну)")
+#         print("4. Добавить улицу (в город)")
+#         print("5. Удалить страну (каскадно)")
+#         print("6. Сохранить изменения")
+#         print("0. Выход")
+        
+#         choice = input("Выберите действие: ")
+        
+#         if choice == '1':
+#             show_variant_info()
+#         elif choice == '2':
+#             name = input("Введите название страны: ")
+#             add_country(name)
+#         elif choice == '3':
+#             if not countries: print("Сначала создайте страну!"); continue
+#             for c in countries: print(f"{c['id']}: {c['name']}")
+#             c_id = int(input("ID страны: "))
+#             name = input("Название города: ")
+#             new_id = max([c['id'] for c in cities], default=0) + 1
+#             cities.append({'id': new_id, 'country_id': c_id, 'name': name})
+#         elif choice == '4':
+#             if not cities: print("Сначала создайте город!"); continue
+#             for c in cities: print(f"{c['id']}: {c['name']}")
+#             c_id = int(input("ID города: "))
+#             name = input("Название улицы: ")
+#             new_id = max([s['id'] for s in streets], default=0) + 1
+#             streets.append({'id': new_id, 'city_id': c_id, 'name': name})
+#         elif choice == '5':
+#             for c in countries: print(f"{c['id']}: {c['name']}")
+#             c_id = int(input("ID страны для удаления: "))
+#             delete_country(c_id)
+#             print("Удалено.")
+#         elif choice == '6':
+#             save_to_csv()
+#         elif choice == '0':
+#             break
+#         else:
+#             print("Неверный ввод.")
+
+# if __name__ == "__main__":
+#     main_menu()
+
+
+
